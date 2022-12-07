@@ -11,7 +11,7 @@ v0.0.1
 # Install 
 
 ```
-selefre  provider install stripe
+selefra provider install stripe
 ```
 
 
