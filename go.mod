@@ -1,6 +1,6 @@
 module github.com/selefra/selefra-provider-stripe
 
-go 1.19
+go 1.18
 
 require (
 	github.com/selefra/selefra-provider-sdk v0.0.14
