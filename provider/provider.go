@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+
 	"github.com/selefra/selefra-provider-stripe/constants"
 
 	"github.com/selefra/selefra-provider-sdk/provider"
@@ -20,13 +21,10 @@ func GetProvider() *provider.Provider {
 		TableList: GenTables(),
 		ClientMeta: schema.ClientMeta{
 			InitClient: func(ctx context.Context, clientMeta *schema.ClientMeta, config *viper.Viper) ([]any, *schema.Diagnostics) {
-				var stripeConfig stripe_client.Configs
+				var stripeConfig stripe_client.Config
 				err := config.Unmarshal(&stripeConfig)
 				if err != nil {
 					return nil, schema.NewDiagnostics().AddErrorMsg(constants.Analysisconfigerrs, err.Error())
-				}
-				if len(stripeConfig.Providers) == 0 {
-					stripeConfig.Providers = append(stripeConfig.Providers, stripe_client.Config{})
 				}
 
 				clients, err := stripe_client.NewClients(stripeConfig)
@@ -54,7 +52,7 @@ func GetProvider() *provider.Provider {
 #  - api_key # Docs to your Stripe secret API key are at https://stripe.com/docs/keys`
 			},
 			Validation: func(ctx context.Context, config *viper.Viper) *schema.Diagnostics {
-				var stripeConfig stripe_client.Configs
+				var stripeConfig stripe_client.Config
 				err := config.Unmarshal(&stripeConfig)
 				if err != nil {
 					return schema.NewDiagnostics().AddErrorMsg(constants.Analysisconfigerrs, err.Error())
