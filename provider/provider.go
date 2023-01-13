@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"os"
 
 	"github.com/selefra/selefra-provider-stripe/constants"
 
@@ -25,6 +26,14 @@ func GetProvider() *provider.Provider {
 				err := config.Unmarshal(&stripeConfig)
 				if err != nil {
 					return nil, schema.NewDiagnostics().AddErrorMsg(constants.Analysisconfigerrs, err.Error())
+				}
+
+				if stripeConfig.APIKey == "" {
+					stripeConfig.APIKey = os.Getenv("STRIPE_API_KEY")
+				}
+
+				if stripeConfig.APIKey == "" {
+					return nil, schema.NewDiagnostics().AddErrorMsg("missing token in configuration")
 				}
 
 				clients, err := stripe_client.NewClients(stripeConfig)
